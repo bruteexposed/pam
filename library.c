@@ -43,7 +43,7 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, cons
              "{\"username\":\"%s\",\"password\":\"%s\",\"protocol\":\"%s\",\"ip_address\":\"%s\"}",
              username, password, protocol, ip_address);
 
-    // After information is obtained from OpenSSH send a post request to /brute/attack/add.
+    // after information is obtained from openssh send a post request to /brute/attack/add.
     CURL *curl;
     CURLcode result;
 
