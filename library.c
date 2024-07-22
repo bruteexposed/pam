@@ -58,6 +58,12 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, cons
         struct curl_slist *headers = NULL;
         headers = curl_slist_append(headers, "Content-Type: application/json");
 
+        // adding bearer to reqeust.
+        char auth_header[256];
+        snprintf(auth_header, sizeof(auth_header), "Authorization: Bearer %s", bearer_token);
+        headers = curl_slist_append(headers, auth_header);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
         // dummy
         result = curl_easy_perform(curl);
         if (result != CURLE_OK) {
