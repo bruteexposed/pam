@@ -1,0 +1,3 @@
+/home/chomnr/personal/2024/clion_projects/pam/cmake-build-debug/CMakeFiles/pam.dir
+/home/chomnr/personal/2024/clion_projects/pam/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/chomnr/personal/2024/clion_projects/pam/cmake-build-debug/CMakeFiles/rebuild_cache.dir
