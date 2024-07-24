@@ -10,7 +10,7 @@
 #include <curl/curl.h>
 
 #define BE_LOG_FILE "/var/log/brute_log.txt"
-#define BRUTE_BEARER_TOKEN "{ENTER YOUR BEARER TOKEN HERE}"
+#define BRUTE_BEARER_TOKEN "{TOKEN}"
 #define BRUTE_POST_URL "http://127.0.0.1:3000/brute/attack/add"
 
 PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv) {
@@ -58,21 +58,21 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, cons
         // Perform HTTP POST request
         result = curl_easy_perform(curl);
         if (result != CURLE_OK) {
-            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
+            fprintf(log_file, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
         }
 
         // Cleanup
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
     } else {
-        fprintf(stderr, "Failed to initialize curl.\n");
+        fprintf(log_file, "Failed to initialize curl.\n");
     }
 
     // Cleanup libcurl
     curl_global_cleanup();
 
     // Close log file
-    // fclose(log_file);
+    fclose(log_file);
 
     return PAM_SUCCESS;
 }
