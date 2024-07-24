@@ -14,7 +14,7 @@
 #############################################
 # Rule for compiling C files.
 
-rule C_COMPILER__pam_unscanned_Debug
+rule C_COMPILER__pam_module_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}/usr/bin/cc $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -22,11 +22,11 @@ rule C_COMPILER__pam_unscanned_Debug
 
 
 #############################################
-# Rule for linking C executable.
+# Rule for linking C shared library.
 
-rule C_EXECUTABLE_LINKER__pam_Debug
-  command = $PRE_LINK && /usr/bin/cc $FLAGS $LINK_FLAGS $in -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
-  description = Linking C executable $TARGET_FILE
+rule C_SHARED_LIBRARY_LINKER__pam_module_Debug
+  command = $PRE_LINK && /usr/bin/cc -fPIC $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS -shared $SONAME_FLAG$SONAME -o $TARGET_FILE $in $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  description = Linking C shared library $TARGET_FILE
   restat = $RESTAT
 
 
@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /home/chomnr/.cache/JetBrains/RemoteDev/dist/3c93f93f4ec3e_CLion-242.20224.66/bin/cmake/linux/x64/bin/cmake --regenerate-during-build -S/home/chomnr/personal/2024/clion_projects/pam -B/home/chomnr/personal/2024/clion_projects/pam/cmake-build-debug
+  command = /home/chomnr/.cache/JetBrains/RemoteDev/dist/3c93f93f4ec3e_CLion-242.20224.66/bin/cmake/linux/x64/bin/cmake --regenerate-during-build -S/home/chomnr/CLionProjects/pam -B/home/chomnr/CLionProjects/pam/cmake-build-debug
   description = Re-running CMake...
   generator = 1
 

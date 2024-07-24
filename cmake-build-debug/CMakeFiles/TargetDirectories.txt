@@ -1,3 +1,7 @@
-/home/chomnr/personal/2024/clion_projects/pam/cmake-build-debug/CMakeFiles/pam.dir
-/home/chomnr/personal/2024/clion_projects/pam/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/chomnr/personal/2024/clion_projects/pam/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/chomnr/CLionProjects/pam/cmake-build-debug/CMakeFiles/pam_module.dir
+/home/chomnr/CLionProjects/pam/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/chomnr/CLionProjects/pam/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/chomnr/CLionProjects/pam/cmake-build-debug/CMakeFiles/list_install_components.dir
+/home/chomnr/CLionProjects/pam/cmake-build-debug/CMakeFiles/install.dir
+/home/chomnr/CLionProjects/pam/cmake-build-debug/CMakeFiles/install/local.dir
+/home/chomnr/CLionProjects/pam/cmake-build-debug/CMakeFiles/install/strip.dir
