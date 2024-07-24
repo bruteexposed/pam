@@ -9,7 +9,7 @@
 #include <security/pam_modules.h>
 #include <curl/curl.h>
 
-// #define BE_LOG_FILE "/var/log/brute_log.txt"
+#define BE_LOG_FILE "/var/log/brute_log.txt"
 #define BRUTE_BEARER_TOKEN "{ENTER YOUR BEARER TOKEN HERE}"
 #define BRUTE_POST_URL "http://127.0.0.1:3000/brute/attack/add"
 
@@ -22,14 +22,12 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, cons
     pam_get_item(pamh, PAM_RHOST, (void*)&ip_address);
     pam_get_item(pamh, PAM_SERVICE, (void*)&protocol);
 
-    // Open log file in append mode
-    // FILE *log_file = fopen(BE_LOG_FILE, "a");
-    // fprintf(log_file, "%s %s %s %s \n", username, password, ip_address, protocol);
-
-    //if (log_file == NULL) {
-    //    fprintf(stderr, "Failed to open log file %s\n", BE_LOG_FILE);
-    //    return PAM_SUCCESS;
-    // }
+    // log any errors.
+    FILE *log_file = fopen(BE_LOG_FILE, "a");
+    if (log_file == NULL) {
+        fprintf(stderr, "Failed to open log file %s\n", BE_LOG_FILE);
+        return PAM_SUCCESS;
+    }
 
     // Payload that is going to be sent
     char json_payload[1024];
