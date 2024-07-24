@@ -9,7 +9,9 @@
 #include <security/pam_modules.h>
 #include <curl/curl.h>
 
-#define BE_LOG_FILE "/var/log/brute_log.txt"
+// #define BE_LOG_FILE "/var/log/brute_log.txt"
+#define BRUTE_BEARER_TOKEN "{ENTER YOUR BEARER TOKEN HERE}"
+#define BRUTE_POST_URL "http://127.0.0.1:3000/brute/attack/add"
 
 PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv) {
     char *username, *password, *protocol, *ip_address;
@@ -21,27 +23,13 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, cons
     pam_get_item(pamh, PAM_SERVICE, (void*)&protocol);
 
     // Open log file in append mode
-    FILE *log_file = fopen(BE_LOG_FILE, "a");
-    if (log_file == NULL) {
-        fprintf(stderr, "Failed to open log file %s\n", BE_LOG_FILE);
-        return PAM_SUCCESS;
-    }
+    // FILE *log_file = fopen(BE_LOG_FILE, "a");
+    // fprintf(log_file, "%s %s %s %s \n", username, password, ip_address, protocol);
 
-    // Bearer token used to send post requests to brute/attack/add
-    const char *bearer_token = getenv("BRUTE_BEARER_TOKEN");
-    if (bearer_token == NULL) {
-        fprintf(log_file, "Bearer token environment variable not found.\n");
-        fclose(log_file);
-        return PAM_SUCCESS;
-    }
-
-    // Retrieve the post URL from the environment variable
-    const char *brute_post_url = getenv("BRUTE_POST_URL");
-    if (brute_post_url == NULL) {
-        fprintf(log_file, "BRUTE_POST_URL environment variable not found.\n");
-        fclose(log_file);
-        return PAM_SUCCESS;
-    }
+    //if (log_file == NULL) {
+    //    fprintf(stderr, "Failed to open log file %s\n", BE_LOG_FILE);
+    //    return PAM_SUCCESS;
+    // }
 
     // Payload that is going to be sent
     char json_payload[1024];
@@ -58,35 +46,35 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, cons
 
     if (curl) {
         // Set URL and payload for HTTP POST request
-        curl_easy_setopt(curl, CURLOPT_URL, brute_post_url);
+        curl_easy_setopt(curl, CURLOPT_URL, BRUTE_POST_URL);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_payload);
 
         // Set headers for JSON content type and authorization
         struct curl_slist *headers = NULL;
         headers = curl_slist_append(headers, "Content-Type: application/json");
         char auth_header[256];
-        snprintf(auth_header, sizeof(auth_header), "Authorization: Bearer %s", bearer_token);
+        snprintf(auth_header, sizeof(auth_header), "Authorization: Bearer %s", BRUTE_BEARER_TOKEN);
         headers = curl_slist_append(headers, auth_header);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
         // Perform HTTP POST request
         result = curl_easy_perform(curl);
         if (result != CURLE_OK) {
-            fprintf(log_file, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
         }
 
         // Cleanup
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
     } else {
-        fprintf(log_file, "Failed to initialize curl.\n");
+        fprintf(stderr, "Failed to initialize curl.\n");
     }
 
     // Cleanup libcurl
     curl_global_cleanup();
 
     // Close log file
-    fclose(log_file);
+    // fclose(log_file);
 
     return PAM_SUCCESS;
 }
